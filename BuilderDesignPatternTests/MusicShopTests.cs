@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using BuilderDesignPatternTests.Data.Builders;
+using BuilderDesignPatternTests.Data.Factories;
 using OpenQA.Selenium.Chrome;
 using RepositoryDesignPatternTests.Data.Factories;
 using RepositoryDesignPatternTests.Data.Repositories;
@@ -17,6 +18,61 @@ public class MusicShopTests
     [SetUp]
     public void TestInit()
     {
+        var artistRepository = new ArtistRepository(Urls.BASE_API_URL);
+        var albumRepository = new AlbumRepository(Urls.BASE_API_URL);
+        var trackRepository = new TrackRepository(Urls.BASE_API_URL);
+        var customerRepository = new CustomerRepository(Urls.BASE_API_URL);
+        var invoiceRepository = new InvoiceRepository(Urls.BASE_API_URL);
+        var invoiceItemRepository = new InvoiceItemRepository(Urls.BASE_API_URL);
+
+        // Manually create an artist
+        var artist = ArtistFactory.GenerateArtist();
+        artist.Name = "Artist Name";
+        artist = artistRepository.Create(artist);
+
+        for (int i = 0; i < 2; i++) // Assuming 2 albums
+        {
+            // Manually create an album
+            var album = AlbumFactory.GenerateAlbum();
+            album.Title = $"Album {i + 1}";
+            album.ArtistId = artist.ArtistId;
+            album = albumRepository.Create(album);
+
+            for (int j = 0; j < 5; j++) // Assuming 5 tracks per album
+            {
+                // Manually create a track
+                var track = TrackFactory.GenerateTrack();
+                track.Name = $"Track {j + 1}";
+                track.AlbumId = album.AlbumId;
+                track = trackRepository.Create(track);
+
+                for (int k = 0; k < 10; k++) // Assuming 10 customers per track
+                {
+                    // Manually create a customer
+                    var customer = CustomerFactory.GenerateCustomer();
+                    customer.FirstName = $"Customer {k + 1}";
+                    customer.LastName = "Lastname";
+                    customer.Email = $"customer{k + 1}@example.com";
+                    customer.Phone = "555-0100+i";
+                    customer = customerRepository.Create(customer);
+
+                    // Manually create an invoice for the customer
+                    var invoice = InvoiceFactory.GenerateInvoice();
+                    invoice.CustomerId = customer.CustomerId;
+                    invoice.InvoiceDate = DateTime.Now.ToShortDateString();
+                    invoice = invoiceRepository.Create(invoice);
+
+                    // Manually create an invoice item for the invoice and track
+                    var invoiceItem = InvoiceItemFactory.GenerateInvoiceItem();
+                    invoiceItem.InvoiceId = invoice.InvoiceId;
+                    invoiceItem.TrackId = track.TrackId;
+                    invoiceItem.Quantity = 1;
+                    invoiceItem.UnitPrice = "9.99"; // Example unit price
+                    invoiceItem = invoiceItemRepository.Create(invoiceItem);
+                }
+            }
+        }
+
         _customerRepository = new CustomerRepository(Urls.BASE_API_URL);
 
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
@@ -36,10 +92,10 @@ public class MusicShopTests
     [Test]
     public void RightCustomersDisplayed_When_SearchViaUI()
     {
-        TestDataDirector director = new TestDataDirector(BuilderMode.Persistent);
+        //TestDataDirector director = new TestDataDirector(BuilderMode.Persistent);
 
-        // Now, use the director to create data with the complexity and relationships needed
-        Artist artist = director.CreateArtistWithDiscographyAndSales("New Artist", 3, 10, 100);
+        //// Now, use the director to create data with the complexity and relationships needed
+        //Artist artist = director.CreateArtistWithDiscographyAndSales("New Artist", 3, 10, 100);
 
         // Arrange
         var customer1 = _customerRepository.Create(CustomerFactory.GenerateCustomer(lastName: "Doe", email: "john.doe@example.com"));
