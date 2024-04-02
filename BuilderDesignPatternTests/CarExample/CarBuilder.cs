@@ -3,9 +3,9 @@ public class CarBuilder : ICarBuilder
 {
     private Car _car = new Car();
 
-    public void SetMake(string make)
+    public void Make(string name)
     {
-        _car.Make = make;
+        _car.Name = name;
     }
 
     public void SetModel(string model)

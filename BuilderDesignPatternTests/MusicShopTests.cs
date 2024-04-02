@@ -73,8 +73,6 @@ public class MusicShopTests
             }
         }
 
-        _customerRepository = new CustomerRepository(Urls.BASE_API_URL);
-
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
         _driver = new ChromeDriver();
         _driver.Manage().Window.Maximize();

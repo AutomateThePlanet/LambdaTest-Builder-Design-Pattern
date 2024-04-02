@@ -10,7 +10,7 @@ public class CarDirector
 
     public Car ConstructSportsCar()
     {
-        _builder.SetMake("Ferrari");
+        _builder.Make("Ferrari");
         _builder.SetModel("488 Spider");
         _builder.SetNumberOfDoors(2);
         _builder.SetEngineType("V8");
@@ -19,7 +19,7 @@ public class CarDirector
 
     public Car ConstructSUV()
     {
-        _builder.SetMake("Land Rover");
+        _builder.Make("Land Rover");
         _builder.SetModel("Defender");
         _builder.SetNumberOfDoors(4);
         _builder.SetEngineType("V8");

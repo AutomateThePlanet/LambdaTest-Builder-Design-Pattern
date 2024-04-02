@@ -1,4 +1,5 @@
-﻿using RepositoryDesignPatternTests.Models;
+﻿using BuilderDesignPatternTests.Data.Factories;
+using RepositoryDesignPatternTests.Models;
 
 namespace BuilderDesignPatternTests.Data.Builders;
 public class TransientArtistBuilder : IArtistBuilder
@@ -12,7 +13,7 @@ public class TransientArtistBuilder : IArtistBuilder
 
     public IArtistBuilder WithDefaultConfiguration()
     {
-        //_artist = ArtistFactory.GenerateArtist();
+        _artist = ArtistFactory.GenerateArtist();
         return this;
     }
 

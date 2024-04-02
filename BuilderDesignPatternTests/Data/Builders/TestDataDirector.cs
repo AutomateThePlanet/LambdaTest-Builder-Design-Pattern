@@ -15,6 +15,7 @@ public class TestDataDirector
     {
         // Start building the artist
         var artist = GetArtistBuilder()
+            .WithDefaultConfiguration()
             .WithName(artistName)
             .Build();
 
